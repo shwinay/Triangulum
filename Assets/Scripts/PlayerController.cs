@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 	}
 	
 
-	void Update ()
+	void FixedUpdate ()
     {
 
         //get input
@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Floor" || other.gameObject.tag == "Obstacle")
         {
             jumpCount = 0;
+            
         }
     }
 
