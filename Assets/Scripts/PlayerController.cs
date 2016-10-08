@@ -9,12 +9,14 @@ public class PlayerController : MonoBehaviour
     Vector3 input;
     Rigidbody rigidbody;
     int jumpCount;
+    Vector3 startPoint;
 
 	void Start ()
     {
         rigidbody = GetComponent<Rigidbody>();
-        input = new Vector3(0, 0, 0);
+        input = new Vector3();
         jumpCount = 0;
+        startPoint = new Vector3(0, 10, 0);
 	}
 	
 
@@ -56,6 +58,11 @@ public class PlayerController : MonoBehaviour
         //    print("shifted rot");
         //}
 
+        if (transform.position.y < -20)
+        {
+            transform.position = startPoint;
+        }
+
 	}
 
     void OnTriggerEnter(Collider other)
@@ -72,7 +79,27 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Floor" || other.gameObject.tag == "Obstacle")
         {
             jumpCount = 0;
-            
+        }
+        
+    }
+
+    void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.tag == "Moving Platform")
+        {
+            jumpCount = 0;
+            print("hit platform");
+            transform.parent = other.transform;
+        }
+    }
+
+    void OnCollisionExit(Collision other)
+    {
+        
+        if (other.gameObject.tag == "Moving Platform")
+        {
+            transform.parent = null;
+            print("exit platform");
         }
     }
 
