@@ -10,29 +10,37 @@ public class PlayerController : MonoBehaviour
     Rigidbody rigidbody;
     int jumpCount;
     Vector3 startPoint;
+    private float cameraRotationLimit = 85f;
+    Camera cam;
+    float xRot;
 
-	void Start ()
+    void Start ()
     {
         rigidbody = GetComponent<Rigidbody>();
         input = new Vector3();
         jumpCount = 0;
         startPoint = new Vector3(0, 10, 0);
-	}
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        cam = Camera.main;
+    }
 	
 
 	void FixedUpdate ()
     {
-
         //get input
         input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
         Vector3 playerRotation = new Vector3(0, Input.GetAxis("Mouse X"), 0) * lookSensitivity;
         rigidbody.MoveRotation(rigidbody.rotation * Quaternion.Euler(playerRotation));
         transform.Translate(input.normalized * speed * Time.deltaTime);
+        
+        xRot += Input.GetAxis("Mouse Y") * lookSensitivity;
+        xRot = Mathf.Clamp(xRot, -90, 90);
+        cam.transform.localEulerAngles = new Vector3(-xRot, cam.transform.localEulerAngles.y, cam.transform.localEulerAngles.z);
 
-        Vector3 cameraRotation = new Vector3(-Input.GetAxis("Mouse Y"), 0, 0) * lookSensitivity;
-        Camera.main.transform.Rotate(cameraRotation);
-
+        Debug.Log(cam.transform.eulerAngles);
+        
         if (Input.GetButton("Run"))
         {
             speed = 8;
@@ -50,13 +58,6 @@ public class PlayerController : MonoBehaviour
                 jumpCount++;
             }
         }
-        //FIX ROTATION
-
-        //if (transform.rotation.eulerAngles.x >= 180)
-        //{
-        //    transform.eulerAngles = new Vector3(180, transform.eulerAngles.y, transform.eulerAngles.z);
-        //    print("shifted rot");
-        //}
 
         if (transform.position.y < -20)
         {
@@ -71,6 +72,12 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 teleportPoint = other.transform.GetChild(0).transform.position;
             transform.position = new Vector3(teleportPoint.x, teleportPoint.y, teleportPoint.z);
+        }
+
+        if (other.tag == "Trampoline")
+        {
+            rigidbody.AddForce(Vector3.up * 500);
+            jumpCount = 1;
         }
     }
 
@@ -88,7 +95,6 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Moving Platform")
         {
             jumpCount = 0;
-            print("hit platform");
             transform.parent = other.transform;
         }
     }
