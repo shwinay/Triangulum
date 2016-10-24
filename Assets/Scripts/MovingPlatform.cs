@@ -17,7 +17,6 @@ public class MovingPlatform : MonoBehaviour {
     {
         if (transform.position.x == movePoints[currentPoint].position.x && transform.position.z == movePoints[currentPoint].position.z)
         {
-            print("at start point");
             currentPoint++;
 
             if (currentPoint >= movePoints.Length)

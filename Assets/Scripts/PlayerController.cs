@@ -38,8 +38,6 @@ public class PlayerController : MonoBehaviour
         xRot += Input.GetAxis("Mouse Y") * lookSensitivity;
         xRot = Mathf.Clamp(xRot, -90, 90);
         cam.transform.localEulerAngles = new Vector3(-xRot, cam.transform.localEulerAngles.y, cam.transform.localEulerAngles.z);
-
-        Debug.Log(cam.transform.eulerAngles);
         
         if (Input.GetButton("Run"))
         {
@@ -105,7 +103,6 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Moving Platform")
         {
             transform.parent = null;
-            print("exit platform");
         }
     }
 
