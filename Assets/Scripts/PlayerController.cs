@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
 
         if (other.tag == "Trampoline")
         {
+            print("hit trampoline");
             rigidbody.AddForce(Vector3.up * 500);
             jumpCount = 1;
         }

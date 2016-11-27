@@ -1,41 +1,54 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Raycast : MonoBehaviour {
+public class Raycast : MonoBehaviour
+{
 
-    RaycastHit hit;
+    public float fireRate = .25f;
+    public float remoteRange = 40f;
+    public Transform remoteEnd;
 
-    Vector3 endPoint;
-    float dist = 10f;
-    ParticleSystem tracer;
+    Camera cam;
+    WaitForSeconds shotDuration = new WaitForSeconds(.02f);
+    LineRenderer laserLine;
+    float nextFire; 
 
-	void Start ()
+    void Start()
     {
-	}
-	
-	void Update ()
+        laserLine = GetComponent<LineRenderer>();
+        cam = Camera.main;
+    }
+
+    void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
         {
-            checkRaycast();
+            nextFire = Time.time + fireRate;
+
+            StartCoroutine(shotEffect());
+
+            Vector3 rayOrigin = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f));
+            RaycastHit hit;
+
+            laserLine.SetPosition(0, remoteEnd.position);
+
+            if (Physics.Raycast(rayOrigin, cam.transform.forward, out hit, remoteRange))
+            {
+                laserLine.SetPosition(1, hit.point);
+            }
+            else
+            {
+                laserLine.SetPosition(1, cam.transform.forward * remoteRange);
+            }
+
         }
+    }
 
-	}
-
-    public bool checkRaycast()
+    private IEnumerator shotEffect()
     {
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, 10f))
-        {
-            dist = Vector3.Distance(transform.position, hit.point);
-            print(hit.transform.name);
-            return true;
-        }
-        else
-        {
-            dist = 10;
-            return false;
-        }
-
+        laserLine.enabled = true;
+        yield return shotDuration;
+        laserLine.enabled = false;
     }
 
 }
