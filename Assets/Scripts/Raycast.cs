@@ -5,7 +5,7 @@ public class Raycast : MonoBehaviour
 {
 
     public float fireRate = .25f;
-    public float remoteRange = 40f;
+    public float remoteRange = 10f;
     public Transform remoteEnd;
 
     Camera cam;
@@ -38,7 +38,7 @@ public class Raycast : MonoBehaviour
             }
             else
             {
-                laserLine.SetPosition(1, cam.transform.forward * remoteRange);
+                laserLine.SetPosition(1, rayOrigin + cam.transform.forward * remoteRange);
             }
 
         }
