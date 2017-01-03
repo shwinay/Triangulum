@@ -48,21 +48,25 @@ public class PlayerController : MonoBehaviour
             speed = 5;
         }
 
-        if (Input.GetButtonDown("Jump"))
-        {
-            if (jumpCount < 2)
-            {
-                rigidbody.AddForce(Vector3.up * 300);
-                jumpCount++;
-            }
-        }
-
         if (transform.position.y < -20)
         {
             transform.position = startPoint;
         }
 
 	}
+
+    void Update()
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+            if (jumpCount < 2)
+            {
+                rigidbody.AddForce(Vector3.up * 300);
+                jumpCount++;
+                print("jumping");
+            }
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     {
