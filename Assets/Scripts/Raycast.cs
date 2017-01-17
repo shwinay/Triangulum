@@ -7,6 +7,7 @@ public class Raycast : MonoBehaviour
     public float fireRate = .25f;
     public float remoteRange = 10f;
     public Transform remoteEnd;
+    public int ammo = 2;
 
     Camera cam;
     WaitForSeconds shotDuration = new WaitForSeconds(.02f);
@@ -21,7 +22,7 @@ public class Raycast : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && Time.time > nextFire)
+        if (Input.GetButtonDown("Fire1") && Time.time > nextFire && ammo > 0)
         {
             nextFire = Time.time + fireRate;
 

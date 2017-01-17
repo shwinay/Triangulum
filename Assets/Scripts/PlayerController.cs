@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -70,18 +71,38 @@ public class PlayerController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Teleporter")
+        if (other.tag == "Teleporter" && other.GetComponent<Teleporter>().state == true)
         {
             Vector3 teleportPoint = other.transform.GetChild(0).transform.position;
             transform.position = new Vector3(teleportPoint.x, teleportPoint.y, teleportPoint.z);
+            
         }
 
-        if (other.tag == "Trampoline")
+        if (other.tag == "Trampoline" && other.GetComponent<Trampoline>().state == true)
         {
             print("hit trampoline");
             rigidbody.AddForce(Vector3.up * 500);
             jumpCount = 1;
         }
+
+        if (other.tag == "Key")
+        {
+            other.gameObject.GetComponent<Renderer>().enabled = false;
+            ParticleSystem pe = other.GetComponentInChildren<ParticleSystem>();
+            pe.Play();
+            Destroy(other.gameObject, 4f);
+        }
+
+        if (other.tag == "Goal")
+        {
+            GameObject[] keyArray = GameObject.FindGameObjectsWithTag("Key");
+            if (keyArray.Length == 0)
+            {
+                print("Finished!");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+        }
+
     }
 
     void OnCollisionEnter(Collision other)
