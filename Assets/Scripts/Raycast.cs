@@ -7,13 +7,13 @@ public class Raycast : MonoBehaviour
     public float fireRate = .25f;
     public float remoteRange = 10f;
     public Transform remoteEnd;
-    public int ammo = 2;
 
     Camera cam;
     WaitForSeconds shotDuration = new WaitForSeconds(.02f);
     LineRenderer laserLine;
-    float nextFire; 
-
+    float nextFire;
+    public int ammo;
+    
     void Start()
     {
         laserLine = GetComponent<LineRenderer>();
@@ -36,12 +36,29 @@ public class Raycast : MonoBehaviour
             if (Physics.Raycast(rayOrigin, cam.transform.forward, out hit, remoteRange))
             {
                 laserLine.SetPosition(1, hit.point);
+
+                //Change state of trampoline and teleporter to on or off
+                if (hit.transform.gameObject.tag == "Trampoline")
+                {
+                    hit.transform.GetComponent<Trampoline>().state = !hit.transform.GetComponent<Trampoline>().state;
+                }
+
+                if (hit.transform.gameObject.tag == "Teleporter")
+                {
+                    hit.transform.GetComponent<Teleporter>().state = !hit.transform.GetComponent<Teleporter>().state;
+                }
+                if (hit.transform.gameObject.tag == "Moving Platform")
+                {
+                    hit.transform.GetComponent<MovingPlatform>().state = !hit.transform.GetComponent<MovingPlatform>().state;
+                }
+
             }
             else
             {
                 laserLine.SetPosition(1, rayOrigin + cam.transform.forward * remoteRange);
             }
 
+            ammo--;
         }
     }
 

@@ -14,13 +14,15 @@ public class PlayerController : MonoBehaviour
     private float cameraRotationLimit = 85f;
     Camera cam;
     float xRot;
+    public static int continueScene;
+    public static int score;
 
     void Start ()
     {
         rigidbody = GetComponent<Rigidbody>();
         input = new Vector3();
         jumpCount = 0;
-        startPoint = new Vector3(0, 10, 0);
+        startPoint = GameObject.FindGameObjectWithTag("Start Point").transform.position;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         cam = Camera.main;
@@ -29,6 +31,7 @@ public class PlayerController : MonoBehaviour
 
 	void FixedUpdate ()
     {
+
         //get input
         input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
@@ -51,7 +54,8 @@ public class PlayerController : MonoBehaviour
 
         if (transform.position.y < -20)
         {
-            transform.position = startPoint;
+            continueScene = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
         }
 
 	}
@@ -98,7 +102,7 @@ public class PlayerController : MonoBehaviour
             GameObject[] keyArray = GameObject.FindGameObjectsWithTag("Key");
             if (keyArray.Length == 0)
             {
-                print("Finished!");
+                score += 1000;
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
         }
@@ -120,6 +124,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpCount = 0;
             transform.parent = other.transform;
+            transform.lossyScale.Set(1, 1, 1);
         }
     }
 
@@ -129,6 +134,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Moving Platform")
         {
             transform.parent = null;
+            transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
