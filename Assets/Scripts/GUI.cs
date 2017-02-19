@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GUI : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class GUI : MonoBehaviour
     public Text timerText;
     public Text ammoText;
     public Text scoreText;
+    public Text keyAlertText;
     public float startTime;
     private float delayTime;
 
@@ -37,8 +39,14 @@ public class GUI : MonoBehaviour
             else
             {
                 timerText.text = "0:0";
-                //Go to died menu
-
+                PlayerController.continueScene = SceneManager.GetActiveScene().buildIndex;
+                PlayerController.score -= 300;
+                if (PlayerController.score < 0)
+                {
+                    PlayerController.score = 0;
+                }
+                SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
+                
             }
 
             if (t <= 10)

@@ -15,4 +15,14 @@ public class Menu : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void switchToPreviousScene()
+    {
+        SceneManager.LoadScene(PlayerController.continueScene);
+    }
+
+    public void exitGame()
+    {
+        Application.Quit();
+    }
+
 }

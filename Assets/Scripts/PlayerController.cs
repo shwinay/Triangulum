@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     float xRot;
     public static int continueScene;
     public static int score;
+    GUI gui;
 
     void Start ()
     {
@@ -26,6 +27,7 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         cam = Camera.main;
+        gui = GameObject.Find("Canvas").GetComponentInChildren<GUI>();
     }
 	
 
@@ -52,10 +54,15 @@ public class PlayerController : MonoBehaviour
             speed = 5;
         }
 
-        if (transform.position.y < -20)
+        if (transform.position.y < -10)
         {
             continueScene = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
+            score -= 300;
+            if (score < 0)
+            {
+                score = 0;
+            }
         }
 
 	}
@@ -84,7 +91,6 @@ public class PlayerController : MonoBehaviour
 
         if (other.tag == "Trampoline" && other.GetComponent<Trampoline>().state == true)
         {
-            print("hit trampoline");
             rigidbody.AddForce(Vector3.up * 500);
             jumpCount = 1;
         }
@@ -102,9 +108,18 @@ public class PlayerController : MonoBehaviour
             GameObject[] keyArray = GameObject.FindGameObjectsWithTag("Key");
             if (keyArray.Length == 0)
             {
-                score += 1000;
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                if (SceneManager.GetActiveScene().buildIndex > 1)
+                {
+                    score += 1000;
+                }
+                continueScene = SceneManager.GetActiveScene().buildIndex + 1;
+                SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 2);
             }
+            if (keyArray.Length != 0)
+            {
+                StartCoroutine(displayKeyAlert());
+            }
+
         }
 
     }
@@ -136,6 +151,13 @@ public class PlayerController : MonoBehaviour
             transform.parent = null;
             transform.localScale = new Vector3(1, 1, 1);
         }
+    }
+
+    IEnumerator displayKeyAlert()
+    {
+        gui.keyAlertText.enabled = true;
+        yield return new WaitForSeconds(3);
+        gui.keyAlertText.enabled = false;
     }
 
 }

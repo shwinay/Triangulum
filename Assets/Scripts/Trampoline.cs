@@ -4,14 +4,25 @@ using System.Collections;
 public class Trampoline : MonoBehaviour {
 
     public bool state;
+    ParticleSystem pe;
 
-	void Start ()
+    void Start()
     {
         state = true;
-	}
-	
-	void Update ()
+        pe = gameObject.GetComponentInChildren<ParticleSystem>();
+    }
+
+    void Update()
     {
-	
-	}
+        if (state == true && pe.isPlaying == false)
+        {
+            pe.Play();
+        }
+
+        if (state == false && pe.isPlaying)
+        {
+            pe.Stop();
+        }
+
+    }
 }

@@ -22,7 +22,7 @@ public class Raycast : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && Time.time > nextFire && ammo > 0)
+        if (Input.GetButtonDown("Fire1") && Time.time > nextFire && ammo > 0 && Time.timeScale == 1)
         {
             nextFire = Time.time + fireRate;
 
