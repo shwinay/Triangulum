@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     float xRot;
     public static int continueScene;
     public static int score;
-    GUI gui;
+    gui gameGUI;
 
     void Start ()
     {
@@ -27,7 +27,13 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         cam = Camera.main;
-        gui = GameObject.Find("Canvas").GetComponentInChildren<GUI>();
+        gameGUI = GameObject.Find("Canvas").GetComponentInChildren<gui>();
+
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            score = 0;
+        }
+
     }
 	
 
@@ -41,9 +47,7 @@ public class PlayerController : MonoBehaviour
         rigidbody.MoveRotation(rigidbody.rotation * Quaternion.Euler(playerRotation));
         transform.Translate(input.normalized * speed * Time.deltaTime);
         
-        xRot += Input.GetAxis("Mouse Y") * lookSensitivity;
-        xRot = Mathf.Clamp(xRot, -90, 90);
-        cam.transform.localEulerAngles = new Vector3(-xRot, cam.transform.localEulerAngles.y, cam.transform.localEulerAngles.z);
+        
         
         if (Input.GetButton("Run"))
         {
@@ -57,6 +61,7 @@ public class PlayerController : MonoBehaviour
         if (transform.position.y < -10)
         {
             continueScene = SceneManager.GetActiveScene().buildIndex;
+            
             SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 1);
             score -= 300;
             if (score < 0)
@@ -66,6 +71,17 @@ public class PlayerController : MonoBehaviour
         }
 
 	}
+
+    void LateUpdate()
+    {
+        if (Time.timeScale != 0)
+        {
+            xRot += Input.GetAxis("Mouse Y") * lookSensitivity;
+            xRot = Mathf.Clamp(xRot, -90, 90);
+            cam.transform.localEulerAngles = new Vector3(-xRot, cam.transform.localEulerAngles.y, cam.transform.localEulerAngles.z);
+        }
+    }
+
 
     void Update()
     {
@@ -100,7 +116,7 @@ public class PlayerController : MonoBehaviour
             other.gameObject.GetComponent<Renderer>().enabled = false;
             ParticleSystem pe = other.GetComponentInChildren<ParticleSystem>();
             pe.Play();
-            Destroy(other.gameObject, 4f);
+            Destroy(other.gameObject, 1f);
         }
 
         if (other.tag == "Goal")
@@ -113,7 +129,7 @@ public class PlayerController : MonoBehaviour
                     score += 1000;
                 }
                 continueScene = SceneManager.GetActiveScene().buildIndex + 1;
-                SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 2);
+                SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 3);
             }
             if (keyArray.Length != 0)
             {
@@ -155,9 +171,10 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator displayKeyAlert()
     {
-        gui.keyAlertText.enabled = true;
+        gameGUI.keyAlertText.enabled = true;
         yield return new WaitForSeconds(3);
-        gui.keyAlertText.enabled = false;
+        gameGUI.keyAlertText.enabled = false;
     }
+
 
 }

@@ -23,6 +23,7 @@ public class PauseGame : MonoBehaviour {
             else if (pauseCanvas.enabled)
             {
                 unpauseGame();
+                Time.timeScale = 1;
             }
 
         }

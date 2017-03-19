@@ -7,12 +7,12 @@ public class UpdateDiedScore : MonoBehaviour {
 
     public Text scoreText;
 
-	void Start ()
+	void Update ()
     {
-        //if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings)
-        //{
-        //    scoreText.text = "Your Score: " + PlayerController.score.ToString();
-        //}
+        if (SceneManager.GetActiveScene().buildIndex + 1 == SceneManager.sceneCountInBuildSettings)
+        {
+            scoreText.text = "Your Score: " + PlayerController.score.ToString();
+        }
 
         scoreText.text = "Score: " + PlayerController.score.ToString();
 	}

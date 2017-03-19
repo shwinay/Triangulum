@@ -13,6 +13,12 @@ public class Menu : MonoBehaviour
     public void switchToMainMenu()
     {
         SceneManager.LoadScene(0);
+        Time.timeScale = 1;
+    }
+
+    public void switchToInstructions()
+    {
+        SceneManager.LoadScene(SceneManager.sceneCountInBuildSettings - 2);
     }
 
     public void switchToPreviousScene()

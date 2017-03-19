@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GUI : MonoBehaviour
+public class gui : MonoBehaviour
 {
 
     public Text timerText;
