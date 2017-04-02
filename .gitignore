@@ -32,3 +32,7 @@ sysinfo.txt
 *.pdb
 Assets/Levels/level 1.unity.meta
 Executable/Triangulum.exe
+*.psd
+Executable/Triangulum-State/Triangulum_Data/sharedassets2.assets.resS
+*.exe
+Executable/Triangulum-State/Triangulum_Data/sharedassets4.assets.resS

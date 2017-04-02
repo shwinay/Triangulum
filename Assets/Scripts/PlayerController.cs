@@ -34,6 +34,9 @@ public class PlayerController : MonoBehaviour
             score = 0;
         }
 
+        GameObject floor = GameObject.FindGameObjectWithTag("Floor");
+        floor.GetComponent<Renderer>().material.mainTexture.wrapMode = TextureWrapMode.Repeat;
+
     }
 	
 
