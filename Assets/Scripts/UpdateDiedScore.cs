@@ -9,11 +9,6 @@ public class UpdateDiedScore : MonoBehaviour {
 
 	void Update ()
     {
-        if (SceneManager.GetActiveScene().buildIndex + 1 == SceneManager.sceneCountInBuildSettings)
-        {
-            scoreText.text = "Your Score: " + PlayerController.score.ToString();
-        }
-
         scoreText.text = "Score: " + PlayerController.score.ToString();
 	}
 	

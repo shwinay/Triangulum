@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
 
     float speed = 5f;
-    float lookSensitivity = 5;
+    public static float lookSensitivity = 6f;
     Vector3 input;
     Rigidbody rigidbody;
     int jumpCount;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public static int continueScene;
     public static int score;
     gui gameGUI;
+    Slider sensitivitySlider;
 
     void Start ()
     {
@@ -28,21 +30,16 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         cam = Camera.main;
         gameGUI = GameObject.Find("Canvas").GetComponentInChildren<gui>();
-
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            score = 0;
-        }
-
+        
         GameObject floor = GameObject.FindGameObjectWithTag("Floor");
         floor.GetComponent<Renderer>().material.mainTexture.wrapMode = TextureWrapMode.Repeat;
-
+        sensitivitySlider = GameObject.FindObjectOfType<Slider>();
+        sensitivitySlider.value = lookSensitivity;
     }
 	
 
 	void FixedUpdate ()
     {
-
         //get input
         input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 
@@ -94,7 +91,6 @@ public class PlayerController : MonoBehaviour
             {
                 rigidbody.AddForce(Vector3.up * 300);
                 jumpCount++;
-                print("jumping");
             }
         }
     }
@@ -170,6 +166,11 @@ public class PlayerController : MonoBehaviour
             transform.parent = null;
             transform.localScale = new Vector3(1, 1, 1);
         }
+    }
+
+    public void adjustSensitivity(float newSensitivity)
+    {
+        lookSensitivity = newSensitivity;
     }
 
     IEnumerator displayKeyAlert()

@@ -14,6 +14,7 @@ public class Menu : MonoBehaviour
     {
         SceneManager.LoadScene(0);
         Time.timeScale = 1;
+        PlayerController.score = 0;
     }
 
     public void switchToInstructions()
